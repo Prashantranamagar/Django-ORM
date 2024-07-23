@@ -47,9 +47,6 @@ To get started with Django ORM, you will need to have Python and Django installe
     ```
 
 
-    ```
-    
-
 ## Usage
 This repository contains useful ORM queries and its best practices for understanding Django ORM. To run the development server and explore the examples:
 
