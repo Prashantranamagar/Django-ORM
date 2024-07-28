@@ -8,10 +8,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         practice_orm()
-        
-   
-
-
-
-
-
