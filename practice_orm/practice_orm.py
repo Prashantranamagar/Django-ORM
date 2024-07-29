@@ -102,11 +102,28 @@ def practice_orm():
     # print(q)  #Error
 
     # Query 21: Retrieve the first names of all authors followed by the user with primary key (pk) equal to 1
+    # q = User.objects.get(pk=1).followed_authors.all().values_list('firstname', flat=True)
+    # print(q)
     # Query 22: Retrieve all authors who have books with titles containing the string “tle”
+    # q = Author.objects.filter(books__title__icontains='tle')
+    # print(q)
+
     # Query 23: Retrieve all authors whose first name starts with the letter “a” and either have a popularity score greater than 5 or joined the platform after the year 2014
+    # q = Author.objects.filter(Q(first_name__startswith='a') & Q(popularity_score__gt=5) | Q(joindate__gt=2014))
+    # print(q)
+
     # Query 24: Retrieve the author with primary key (pk) equal to 1
+    # q = Author.objects.filter(pk=1)
+    # print(q)
+
+
     # Query 25: Retrieve the first 10 authors in the database
-    # Query 26: Retrieve the first and last author in the database with a popularity score of 7
+    q = Author.objects.all()[:10]
+    print(q)
+
+    # Query 26: Retrieve the first and last author in the database with a popularity score of 7.
+    
+
     # Query 27: Retrieve all authors whose joindate year is greater than or equal to 2012, popularity_score is greater than or equal to 4, joindate day is greater than or equal to 12, and firstname starts with ‘a’
     # Query 28: Retrieve all authors whose joindate year is not equal to 2012
     # Query 29: Retrieve the oldest joindate among all authors, the newest joindate among all authors, the average popularity_score of all authors, and the sum of price of all books
