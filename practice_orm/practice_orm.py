@@ -118,15 +118,27 @@ def practice_orm():
 
 
     # Query 25: Retrieve the first 10 authors in the database
-    q = Author.objects.all()[:10]
-    print(q)
+    # q = Author.objects.all()[:10]
+    # print(q)
 
     # Query 26: Retrieve the first and last author in the database with a popularity score of 7.
-    
+    # q = Author.objects.filter(popularity_score=6).first()
+    # a = Author.objects.filter(popularity_score=6).last()
+    # s = [q, a]
+    # print(s)
+
 
     # Query 27: Retrieve all authors whose joindate year is greater than or equal to 2012, popularity_score is greater than or equal to 4, joindate day is greater than or equal to 12, and firstname starts with ‘a’
+    # q = Author.objects.filter(joindate__year__gte=2012, popularity_score__gte=4, joindate__day__gte=12, firstname__istartswith='a')
+    # print(q)
+
+    
     # Query 28: Retrieve all authors whose joindate year is not equal to 2012
+    q = Author.objects.exclude(joindate__year=2012)
+    print(q)
+    
     # Query 29: Retrieve the oldest joindate among all authors, the newest joindate among all authors, the average popularity_score of all authors, and the sum of price of all books
+    # q = 
     # Query 30: Retrieve all authors who have not been recommended by anyone
     # Query 31: Retrieve all books that have an author, and all books that have an author who has not been recommended by anyone
     # Query 32: Calculate the sum of the price of all books authored by the author with primary key (pk) equal to 1
