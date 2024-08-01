@@ -34,7 +34,7 @@ def practice_orm():
 
 
     # Query 6: Retrieve authors with specific primary keys
-    q4 = Author.objects.filter(pk__in=[1, 2, 3, 4])
+    # q4 = Author.objects.filter(pk__in=[1, 2, 3, 4])
     # print(q4)
 
 
@@ -191,10 +191,18 @@ def practice_orm():
     # q = Author.objects.filter(joindate__gte=datetime.date(day=20, year=2014, month=9)).aggregate(Avg('popularity_score'))
     # print(q)
 
+
+
+
+
+
     # Query 39: Filter Books by Authors who have written more than 10 Books
-    q = Books.objects.all().annotate(bk_count=Count('author__books')).filter(bk_count__gt=10).distinct()
-    print(q)
+    # q = Books.objects.all().annotate(bk_count=Count('author__books')).filter(bk_count__gt=10).distinct()
+    # print(q)
+
+
+
 
     # Query 40: Filter Books by Title Count
-    q = Books.objects.all().annotate(count_title=Count('title')).filter(count_title__gt=1)
-    print(q)
+    # q = Books.objects.all().annotate(count_title=Count('title')).filter(count_title__gt=1)
+    # print(q)
