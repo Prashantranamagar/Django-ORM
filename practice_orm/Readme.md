@@ -118,162 +118,194 @@ Meta options: Meta options provide additional settings for models, such as order
 
 
 ## Querying Related Objects
-● Select Related for Foreign Key:
-ModelName.objects.select_related('related_name').all()
-● Prefetch Related for Many-to-Many or Reverse Foreign Key:
-ModelName.objects.prefetch_related('related_name').all()
-By: Waleed Mousa
-● Filter on Related Fields:
-ModelName.objects.filter(related_name__field=value)
-● Chaining Filters on Related Fields:
-ModelName.objects.filter(related_name__field1=value1,
-related_name__field2=value2)
-● Related Fields Greater/Less Than:
-ModelName.objects.filter(related_name__field__gt=value)
+    ● Select Related for Foreign Key:
+    ModelName.objects.select_related('related_name').all()
+
+    ● Prefetch Related for Many-to-Many or Reverse Foreign Key:
+    ModelName.objects.prefetch_related('related_name').all()
+    By: Waleed Mousa
+
+    ● Filter on Related Fields:
+    ModelName.objects.filter(related_name__field=value)
+
+    ● Chaining Filters on Related Fields:
+    ModelName.objects.filter(related_name__field1=value1,
+    related_name__field2=value2)
+
+    ● Related Fields Greater/Less Than:
+    ModelName.objects.filter(related_name__field__gt=value)
+
 
 ## Aggregation and Annotation
+    Aggregation --> compute summary statistics or calculations over a set of records in a QuerySet. Count, Sum, Avg, Min, Max
+    Example:
+    total_price = Book.objects.aggregate(total_price=Sum('price'))
+    print(total_price)  # Output: {'total_price': 12345.67}
 
-Aggregation --> compute summary statistics or calculations over a set of records in a QuerySet. Count, Sum, Avg, Min, Max
-Example:
-total_price = Book.objects.aggregate(total_price=Sum('price'))
-print(total_price)  # Output: {'total_price': 12345.67}
+    Annotation -->  Add additional information to each object in the QuerySet based on calculations. Adds new columns to each row in the QuerySet with its calculated value.
+    Example:
+    books = Book.objects.annotate(discounted_price=F('price') * 0.9)
+    for book in books:
+        print(f"{book.title} - Discounted Price: {book.discounted_price}")
 
-Annotation -->  Add additional information to each object in the QuerySet based on calculations. Adds new columns to each row in the QuerySet with its calculated value.
-Example:
-books = Book.objects.annotate(discounted_price=F('price') * 0.9)
-for book in books:
-    print(f"{book.title} - Discounted Price: {book.discounted_price}")
-
-publishers = Publisher.objects.annotate(num_books=Count('book'))
-for publisher in publishers:
-    print(f"{publisher.name} has {publisher.num_books} books")
+    publishers = Publisher.objects.annotate(num_books=Count('book'))
+    for publisher in publishers:
+        print(f"{publisher.name} has {publisher.num_books} books")
 
 
 ## Complex Queries with Q Objects
-AND Conditions: ModelName.objects.filter(Q(field1=value1) &
-Q(field2=value2))
-● OR Conditions: ModelName.objects.filter(Q(field1=value1) |
-Q(field2=value2))
-● NOT Conditions: ModelName.objects.filter(~Q(field=value))
+    ● AND Conditions: ModelName.objects.filter(Q(field1=value1) &
+    Q(field2=value2))
+
+    ● OR Conditions: ModelName.objects.filter(Q(field1=value1) |
+    Q(field2=value2))
+
+    ● NOT Conditions: ModelName.objects.filter(~Q(field=value))
+
 
 ## Updating and Deleting
-● Update Records:
-ModelName.objects.filter(attribute=value).update(field=new_value)
-● Delete Records: ModelName.objects.filter(attribute=value).delete()
+    ● Update Records:
+    ModelName.objects.filter(attribute=value).update(field=new_value)
+
+    ● Delete Records: ModelName.objects.filter(attribute=value).delete()
+
 
 ## Handling Transactions
-● Atomic Transactions: with transaction.atomic(): # your operations
+    ● Atomic Transactions: with transaction.atomic(): # your operations
+
 
 ## Custom Manager Methods
-● Custom QuerySet Method in Manager: ModelName.objects.custom_method()
+    ● Custom QuerySet Method in Manager: ModelName.objects.custom_method()
 
-Raw SQL Queries
-● Raw SQL Query: ModelName.objects.raw('SELECT * FROM app_modelname')
+    Raw SQL Queries
+    ● Raw SQL Query: ModelName.objects.raw('SELECT * FROM app_modelname')
 
-Database Functions
-● Concatenate Fields: ModelName.objects.annotate(new_field=Concat('field1',
-Value(' '), 'field2'))
-● Length Function:
-ModelName.objects.annotate(text_length=Length('textfield'))
-● Lower, Upper Functions:
-ModelName.objects.annotate(lower_field=Lower('field'))
-● Coalesce Function:
-ModelName.objects.annotate(field_or_default=Coalesce('field',
-Value('default')))
-● Cast Function: ModelName.objects.annotate(cast_field=Cast('char_field',
-IntegerField()))
-
-
-Pagination with QuerySets
-● Paginator: paginator = Paginator(ModelName.objects.all(), 10) # 10 items
-per page
+    Database Functions
+    ● Concatenate Fields: ModelName.objects.annotate(new_field=Concat('field1',
+    Value(' '), 'field2'))
+    ● Length Function:
+    ModelName.objects.annotate(text_length=Length('textfield'))
+    ● Lower, Upper Functions:
+    ModelName.objects.annotate(lower_field=Lower('field'))
+    ● Coalesce Function:
+    ModelName.objects.annotate(field_or_default=Coalesce('field',
+    Value('default')))
+    ● Cast Function: ModelName.objects.annotate(cast_field=Cast('char_field',
+    IntegerField()))
 
 
-Conditional Expressions
-By: Waleed Mousa
-● Case/When: ModelName.objects.annotate(new_field=Case(When(condition,
-then=Value('result')), default=Value('default')))
-● Conditional Update:
-ModelName.objects.filter(condition).update(field=Case(When(sub_condition,
-then=Value('value')), default=Value('default')))
-
-Database Schema Queries
-● Get SQL Schema of a Model:
-str(ModelName.objects.model._meta.sql_schema())
-
-F Expressions for Dynamic Data Handling
-● Dynamic Field Operations: ModelName.objects.update(field=F('other_field')
-* 2)
-
-Database Locking
-● Select for Update:
-ModelName.objects.select_for_update().filter(attribute=value)
+## Pagination with QuerySets
+    ● Paginator: paginator = Paginator(ModelName.objects.all(), 10) # 10 items
+    per page
 
 
-Extra Queries
-● Using Extra: ModelName.objects.extra(select={'is_recent': "pub_date >
-'2020-01-01'"})
-22. Combining QuerySets
-● Union of QuerySets: qs1.union(qs2)
-● Intersection of QuerySets: qs1.intersection(qs2)
-● Difference of QuerySets: qs1.difference(qs2)
+## Conditional Expressions
+    By: Waleed Mousa
+    ● Case/When: ModelName.objects.annotate(new_field=Case(When(condition,
+    then=Value('result')), default=Value('default')))
+    ● Conditional Update:
+    ModelName.objects.filter(condition).update(field=Case(When(sub_condition,
+    then=Value('value')), default=Value('default')))
 
 
-Specific Database Operations
-● Using Specific Database: ModelName.objects.using('database_name').all()
+## Database Schema Queries
+    ● Get SQL Schema of a Model:
+    str(ModelName.objects.model._meta.sql_schema())
 
 
-Model Instance Creation
-● Create and Save Instance: instance = ModelName(field=value);
-instance.save()
-● Create with Objects.create(): instance =
-ModelName.objects.create(field=value)
+## F Expressions for Dynamic Data Handling
+    ● Dynamic Field Operations: ModelName.objects.update(field=F('other_field')
+    * 2)
 
 
+## Database Locking
+    ● Select for Update:
+    ModelName.objects.select_for_update().filter(attribute=value)
 
- Advanced Usage of F Expressions
-● Updating with F Expressions:
-ModelName.objects.update(field=F('other_field') + 1)
-● Filtering with F Expressions:
-ModelName.objects.filter(field__gt=F('other_field'))
+
+## Extra Queries
+    ● Using Extra: ModelName.objects.extra(select={'is_recent': "pub_date >
+    '2020-01-01'"})
+
+
+## Combining QuerySets
+    ● Union of QuerySets: qs1.union(qs2)
+    ● Intersection of QuerySets: qs1.intersection(qs2)
+    ● Difference of QuerySets: qs1.difference(qs2)
+
+
+## Specific Database Operations
+    ● Using Specific Database: ModelName.objects.using('database_name').all()
+
+
+## Model Instance Creation
+    ● Create and Save Instance: instance = ModelName(field=value);
+    instance.save()
+    ● Create with Objects.create(): instance =
+    ModelName.objects.create(field=value)
 
 
 
- Working with GeoDjango
-● GeoDjango Distance Filter:
-ModelName.objects.filter(location__distance_lte=(point, D(km=5)))
-● GeoDjango Area Calculation:
-ModelName.objects.annotate(area=Area('geometry'))
+ ## Advanced Usage of F Expressions
+    ● Updating with F Expressions:
+    ModelName.objects.update(field=F('other_field') + 1)
+    ● Filtering with F Expressions:
+    ModelName.objects.filter(field__gt=F('other_field'))
 
-6. Model Inheritance Handling
-● Querying Child Models:
-ParentModel.objects.select_related('childmodel').all()
-37. Database Index Related Queries
-● Forcing a Specific Index:
-ModelName.objects.force_index('index_name').filter()
-38. Query Hints for Optimizations
-● Using Query Hints: ModelName.objects.using_hint('hint_name').filter()
-39. Complex Joins and Subqueries
-● Subquery in QuerySet: subquery =
-Subquery(AnotherModel.objects.filter(relation=F('outer_ref_field')).value
-s('field')[:1])
-40. Working with JSON Fields
-● Filtering on JSON Field: ModelName.objects.filter(json_field__key=value)
-● Querying Inside a JSON Field Array:
-ModelName.objects.filter(json_field__contains=[{'key': 'value'}])
-41. Raw Queries and Expressions
-● Using Raw SQL Queries: ModelName.objects.raw('SELECT * FROM
-myapp_modelname WHERE condition')
-● Raw SQL for Updates: ModelName.objects.raw('UPDATE myapp_modelname SET
-field=value WHERE condition')
-42. Caching QuerySets
-● Caching Results of QuerySets: from django.core.cache import cache;
-cache.set('my_key', ModelName.objects.all(), 300)
-43. Query Optimization Techniques
-● Select Only for Performance: ModelName.objects.only('field1', 'field2')
-By: Waleed Mousa
-● Defer Fields Not Needed Immediately:
-ModelName.objects.defer('large_field')
-44. Advanced Date/Time Handling
-● Truncating Dates: ModelName.objects.annotate(date=Trunc('pub_date',
-'day', output_field=DateField()))
+
+
+ ## Working with GeoDjango
+    ● GeoDjango Distance Filter:
+    ModelName.objects.filter(location__distance_lte=(point, D(km=5)))
+    ● GeoDjango Area Calculation:
+    ModelName.objects.annotate(area=Area('geometry'))
+
+
+## Model Inheritance Handling
+    ● Querying Child Models:
+    ParentModel.objects.select_related('childmodel').all()
+
+
+## Database Index Related Queries
+    ● Forcing a Specific Index:
+    ModelName.objects.force_index('index_name').filter()
+
+
+## Query Hints for Optimizations
+    ● Using Query Hints: ModelName.objects.using_hint('hint_name').filter()
+
+
+## Complex Joins and Subqueries
+    ● Subquery in QuerySet: subquery =
+    Subquery(AnotherModel.objects.filter(relation=F('outer_ref_field')).value
+    s('field')[:1])
+
+
+## Working with JSON Fields
+    ● Filtering on JSON Field: ModelName.objects.filter(json_field__key=value)
+    ● Querying Inside a JSON Field Array:
+    ModelName.objects.filter(json_field__contains=[{'key': 'value'}])
+
+
+## Raw Queries and Expressions
+    ● Using Raw SQL Queries: ModelName.objects.raw('SELECT * FROM
+    myapp_modelname WHERE condition')
+    ● Raw SQL for Updates: ModelName.objects.raw('UPDATE myapp_modelname SET
+    field=value WHERE condition')
+
+
+## Caching QuerySets
+    ● Caching Results of QuerySets: from django.core.cache import cache;
+    cache.set('my_key', ModelName.objects.all(), 300)
+
+
+## Query Optimization Techniques`  
+    ● Select Only for Performance: ModelName.objects.only('field1', 'field2')
+    By: Waleed Mousa
+    ● Defer Fields Not Needed Immediately:
+    ModelName.objects.defer('large_field')
+
+
+## Advanced Date/Time Handling
+    ● Truncating Dates: ModelName.objects.annotate(date=Trunc('pub_date',
+    'day', output_field=DateField()))
