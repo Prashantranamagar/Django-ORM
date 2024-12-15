@@ -21,6 +21,27 @@ Annotations: Annotations allow you to add calculated fields to QuerySets based o
 Meta options: Meta options provide additional settings for models, such as ordering, database table names, and unique constraints. They allow you to customize the behavior of models at the class level.
 
 
+## Anotate vs Aggregate Function (Imp)
+
+| **Feature**  | **`annotate`**                                                                 | **`aggregate`**                                                                 |
+|--------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| **Purpose**  | Adds calculated fields to each item in the queryset (per-group or per-row calculations). | Computes a single summary value for the entire queryset (overall calculations). |
+| **Scope**    | Works on individual rows or grouped rows in the queryset.                   | Works on the entire queryset and returns a dictionary of the results.          |
+| **Output**   | Returns a queryset with additional fields for the annotated values.         | Returns a single dictionary with the aggregated values.                        |
+| **Use Case** | When you need to calculate values for each row or group (e.g., total for each customer). | When you need a summary value for the whole dataset (e.g., total revenue across all orders). |
+| **Chaining** | Can be chained with other query operations (e.g., `filter`, `order_by`, etc.). | Ends the query chain, as it computes a final result.                           |
+
+
+## When to use anotate and aggregate
+| **Scenario**                          | **Use `annotate`** | **Use `aggregate`**            |
+|---------------------------------------|--------------------|---------------------------------|
+| Calculate per-row or per-group values.| ✅                  | ❌                              |
+| Calculate overall summary values.     | ❌                  | ✅                              |
+| Chain with other query operations.    | ✅                  | ❌ (ends the query chain).      |
+| Need results as a queryset.           | ✅                  | ❌                              |
+| Need a single summary dictionary.     | ❌                  | ✅                              |
+
+
 ## Basic Queries
 
 
@@ -218,7 +239,7 @@ Meta options: Meta options provide additional settings for models, such as order
     * 2)
 
 
-## Database Locking
+## Database Locking(IMP)
     ● Select for Update:
     ModelName.objects.select_for_update().filter(attribute=value)
 
@@ -287,7 +308,7 @@ Meta options: Meta options provide additional settings for models, such as order
     ModelName.objects.filter(json_field__contains=[{'key': 'value'}])
 
 
-## Raw Queries and Expressions
+## Raw Queries and Expressions(IMP)
     ● Using Raw SQL Queries: ModelName.objects.raw('SELECT * FROM
     myapp_modelname WHERE condition')
     ● Raw SQL for Updates: ModelName.objects.raw('UPDATE myapp_modelname SET
