@@ -16,7 +16,7 @@ Database routers: Database routers allow you to specify which database to use fo
 
 Aggregation: Aggregation provides methods for performing calculations on QuerySets, such as Sum, Count, Avg, and Max. They are used to retrieve statistics or summary information about the data in the database.
 
-Annotations: Annotations allow you to add calculated fields to QuerySets based on database functions or other fields. They are used to add computed or aggregated data to QuerySets.
+Annotations: Annotations allow you to add calculated fields to QuerySets based on database functions or other fields. They are used to add computed or aggregated data to QuerySets. also used to calculate grouped aggregration.
 
 Meta options: Meta options provide additional settings for models, such as ordering, database table names, and unique constraints. They allow you to customize the behavior of models at the class level.
 
