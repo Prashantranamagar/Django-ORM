@@ -64,14 +64,13 @@ Meta options: Meta options provide additional settings for models, such as order
 | `get(**kwargs)`               | Retrieve a single record by primary key or unique criteria |
 | `filter(**kwargs)`            | Filter search to return only rows that match the search term |
 | `exclude(**kwargs)`            | Returns a new QuerySet containing objects that do not match the given lookup parameters. |
-
-| `value_list()`         | Return only the specified columns                          |
-| `values()`            | Return each object as a Python dictionary                  |
+| `value_list()`         | Return only the specified columns,    query sets of tuple                      |
+| `values()`            | Return each object as a Python dictionary , query sets of dictionary                 |
 | `order_by('-attribute')` | Order in descending order                              |
 | `order_by('attribute')`  | Order in ascending order                               |
 | `exist()`               | query existence test                                       |
 | `none()`               | Used when you want to explicitly create a QuerySet that contains no results |
-| `only()`               | Fetches only specified fields from the database.|
+| `only()`               | Fetches only specified fields from the database., query sets of model instances|
 | `differ()`               | Excludes specified fields from the initial query, fetching them later if accessed. |
 | `select_related()`       | Joins tables in a single query for single-valued relationships |
 | `prefetch_related()`     |  Performs separate queries for multi-valued relationships and combines them in Python. |
